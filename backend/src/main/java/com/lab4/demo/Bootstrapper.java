@@ -1,5 +1,10 @@
 package com.lab4.demo;
 
+import com.lab4.demo.consultation.ConsultationService;
+import com.lab4.demo.consultation.model.dto.ConsultationDTO;
+import com.lab4.demo.patient.PatientService;
+import com.lab4.demo.patient.model.Patient;
+import com.lab4.demo.patient.model.dto.PatientDTO;
 import com.lab4.demo.security.AuthService;
 import com.lab4.demo.security.dto.SignupRequest;
 import com.lab4.demo.user.RoleRepository;
@@ -12,6 +17,8 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Component
@@ -23,6 +30,10 @@ public class Bootstrapper implements ApplicationListener<ApplicationReadyEvent> 
     private final UserRepository userRepository;
 
     private final AuthService authService;
+
+    private final PatientService patientService;
+
+    private final ConsultationService consultationService;
 
     @Value("${app.bootstrap}")
     private Boolean bootstrap;
@@ -39,6 +50,7 @@ public class Bootstrapper implements ApplicationListener<ApplicationReadyEvent> 
                                 .build()
                 );
             }
+
             authService.register(SignupRequest.builder()
                     .email("alex@email.com")
                     .username("alex")
@@ -49,8 +61,23 @@ public class Bootstrapper implements ApplicationListener<ApplicationReadyEvent> 
                     .email("alex1@email.com")
                     .username("alex1")
                     .password("WooHoo1!")
-                    .roles(Set.of("CUSTOMER"))
+                    .roles(Set.of("DOCTOR"))
                     .build());
+            authService.register(SignupRequest.builder()
+                    .email("alex2@email.com")
+                    .username("alex2")
+                    .password("WooHoo1!")
+                    .roles(Set.of("SECRETARY"))
+                    .build());
+            patientService.create(PatientDTO.builder()
+                    .name("Pop Andrei")
+                    .idCardNb("SX190190")
+                    .personalCode("1981234567891")
+                    .birthDate(LocalDate.now())
+                    .address("Cluj")
+                    .build());
+
+            
         }
     }
 }

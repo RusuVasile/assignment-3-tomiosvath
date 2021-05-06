@@ -46,6 +46,17 @@ public class UserService {
         return null;
     }*/
 
+    public User findDoctorByName(String name){
+        User user = userRepository.findByUsername(name)
+                .orElseThrow(() -> new RuntimeException("Not found"));
+
+        for (Role role : user.getRoles())
+            if (role.getName() == ERole.DOCTOR)
+                return user;
+
+        throw new RuntimeException("No doctor found");
+    }
+
     public void delete(Long id) {
         Optional<User> user = userRepository.findById(id);
         userRepository.delete(user.get());
@@ -63,8 +74,8 @@ public class UserService {
         Set<Role> roles = new HashSet<>();
 
         if (user.getRole() == null){
-            Role defaultRole = roleRepository.findByName(ERole.CUSTOMER)
-                    .orElseThrow(() -> new RuntimeException("Cannot find CUSTOMER role"));
+            Role defaultRole = roleRepository.findByName(ERole.SECRETARY)
+                    .orElseThrow(() -> new RuntimeException("Cannot find SECRETARY role"));
             roles.add(defaultRole);
         }
         else{
@@ -87,8 +98,8 @@ public class UserService {
         Set<Role> roles = new HashSet<>();
 
         if (user.getRole() == null){
-            Role defaultRole = roleRepository.findByName(ERole.CUSTOMER)
-                    .orElseThrow(() -> new RuntimeException("Cannot find CUSTOMER role"));
+            Role defaultRole = roleRepository.findByName(ERole.SECRETARY)
+                    .orElseThrow(() -> new RuntimeException("Cannot find SECRETARY role"));
             roles.add(defaultRole);
         }
         else{

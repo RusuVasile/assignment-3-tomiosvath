@@ -86,8 +86,12 @@ export default {
         if (this.$store.state.auth.status.loggedIn) {
           if (this.$store.getters["auth/isAdmin"]) {
             router.push("/users");
-          } else {
-            router.push("/items");
+          }
+          if (this.$store.getters["auth/isDoctor"]) {
+            router.push("/consultations");
+          }
+          if (this.$store.getters["auth/isSecretary"]) {
+            router.push("/patients");
           }
         } else {
           alert("Invalid credentials!");

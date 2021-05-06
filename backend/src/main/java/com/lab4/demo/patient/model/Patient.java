@@ -1,5 +1,6 @@
-package com.lab4.demo.frontoffice.model;
+package com.lab4.demo.patient.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,7 @@ import java.time.LocalDate;
 @Entity
 @Builder
 @RequiredArgsConstructor
+@AllArgsConstructor
 @Data
 public class Patient {
 

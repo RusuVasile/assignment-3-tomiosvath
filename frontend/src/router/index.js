@@ -2,7 +2,8 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import UserList from "../views/UserList.vue";
 import ItemList from "../views/ItemList.vue";
-import ItemListAdmin from "../views/ItemListAdmin";
+import ConsultationList from "../views/ConsultationList";
+import PatientList from "../views/PatientList";
 import { auth as store } from "../store/auth.module";
 import Login from "../views/Login";
 
@@ -39,9 +40,21 @@ const routes = [
     },
   },
   {
-    path: "/itemsAdmin",
-    name: "Items",
-    component: ItemListAdmin,
+    path: "/consultations",
+    name: "Consultations",
+    component: ConsultationList,
+    beforeEnter: (to, from, next) => {
+      if (store.state.status.loggedIn) {
+        next();
+      } else {
+        next({ name: "Home" });
+      }
+    },
+  },
+  {
+    path: "/patients",
+    name: "Patients",
+    component: PatientList,
     beforeEnter: (to, from, next) => {
       if (store.state.status.loggedIn) {
         next();
@@ -53,9 +66,6 @@ const routes = [
   {
     path: "/about",
     name: "About",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/About.vue"),
   },

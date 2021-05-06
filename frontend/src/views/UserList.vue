@@ -11,7 +11,6 @@
         hide-details
       ></v-text-field>
       <v-btn @click="addUser">Add user</v-btn>
-      <v-btn @click="switchView">Switch to Books</v-btn>
     </v-card-title>
     <v-data-table
       :headers="headers"
@@ -29,7 +28,6 @@
 
 <script>
 import api from "../api";
-import router from "../router";
 import UserDialog from "../components/UserDialog";
 
 export default {
@@ -60,9 +58,6 @@ export default {
     },
     addUser() {
       this.dialogVisible = true;
-    },
-    switchView(){
-      router.push("/itemsAdmin")
     },
     async refreshList() {
       this.dialogVisible = false;

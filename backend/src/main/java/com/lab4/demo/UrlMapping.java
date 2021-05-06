@@ -5,6 +5,9 @@ public class UrlMapping {
     public static final String FRONT_OFFICE = API_PATH + "/fo";
     public static final String EXPORT_REPORT = API_PATH + "/export/{type}";
 
+    public static final String CONSULTATION = API_PATH + "/consultations";
+    public static final String PATIENT = API_PATH + "/patients";
+
     public static final String AUTH = API_PATH + "/auth";
     public static final String SIGN_IN = "/sign-in";
     public static final String SIGN_UP = "/sign-up";
