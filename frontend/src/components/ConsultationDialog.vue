@@ -21,6 +21,7 @@
                         {{ isNew ? "Create" : "Save" }}
                     </v-btn>
                     <v-btn @click="deleteConsultation">Delete Consultation</v-btn>
+                    <v-btn @click="patientArrived">Check in patient</v-btn>
                 </v-card-actions>
             </v-card>
         </template>
@@ -35,6 +36,12 @@
         props: {
             consultation: Object,
             opened: Boolean,
+
+        },
+        data() {
+            return {
+                connected: false,
+            }
         },
         methods: {
             persist() {
@@ -63,12 +70,19 @@
                     id: this.consultation.id,
                 })
                 .then(() => this.$emit("refresh"));
-            }
+            },
+            patientArrived(){
+                api.webSocket.checkIn(this.consultation.patientName, this.consultation.date, this.consultation.doctorName);
+            },
         },
         computed: {
             isNew: function () {
                 return !this.consultation.id;
+
             },
+        },
+        created() {
+            this.connected = api.webSocket.connect();
         },
     };
 </script>

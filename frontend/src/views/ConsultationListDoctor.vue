@@ -1,7 +1,7 @@
 <template>
     <v-card>
         <v-card-title>
-            Patients
+            Consultations
             <v-spacer></v-spacer>
             <v-text-field
                     v-model="search"
@@ -10,73 +10,72 @@
                     single-line
                     hide-details
             ></v-text-field>
-            <v-btn @click="addPatient">Add patient</v-btn>
-            <v-btn @click="switchView">Switch to consultations</v-btn>
+            <v-btn @click="addConsultation">Add Consultation</v-btn>
+            <v-btn @click="switchView">Switch to Patients</v-btn>
         </v-card-title>
         <v-data-table
                 :headers="headers"
-                :items="patients"
+                :items="consultations"
                 :search="search"
-                @click:row="editPatient"
+                @click:row="editConsultation"
         ></v-data-table>
-        <PatientDialog
+        <ConsultationDialog
                 :opened="dialogVisible"
-                :patient="selectedPatient"
+                :consultation="selectedConsultation"
                 @refresh="refreshList"
-        ></PatientDialog>
+        ></ConsultationDialog>
     </v-card>
 </template>
 
 <script>
+    import ConsultationDialog from "../components/ConsultationDialog";
     import api from "../api";
-    import PatientDialog from "../components/PatientDialog";
     import router from "../router";
 
     export default {
-        name: "PatientList",
-        components: { PatientDialog},
-        data(){
+        name: "ConsultationListDoctor",
+        components: { ConsultationDialog },
+        data() {
             return {
-                patients: [],
+                consultations: [],
                 search: "",
                 headers: [
                     {
-                        text: "Name",
+                        text: "Date",
                         align: "start",
                         sortable: false,
-                        value: "name",
+                        value: "date",
                     },
-                    { text: "ID Card Number", value: "idCardNb" },
-                    { text: "Personal Code", value: "personalCode" },
-                    { text: "Birth Date", value: "birthDate" },
-                    { text: "Address", value: "address" },
+                    { text: "Doctor", value: "doctorName" },
+                    { text: "Patient", value: "patientName" },
+                    { text: "Author", value: "author" },
+                    { text: "Details", value: "details" },
                 ],
                 dialogVisible: false,
-                selectedPatient: {},
-                connected: false,
+                selectedConsultation: {},
             };
         },
         methods: {
-            editPatient(patient) {
-                this.selectedPatient = patient;
+            editConsultation(consultation) {
+                this.selectedConsultation = consultation;
                 this.dialogVisible = true;
             },
-            addPatient() {
+            addConsultation() {
                 this.dialogVisible = true;
             },
             async refreshList() {
                 this.dialogVisible = false;
-                this.selectedPatient = {};
-                this.patients = await api.patients.allPatients();
+                this.selectedConsultation = {};
+                this.consultations = await api.consultations.allConsultations();
             },
             switchView(){
-                router.push("/consultations");
-            }
+                router.push("/patientsDoctor");
+            },
         },
         created() {
             this.refreshList();
         },
-    };
+    }
 </script>
 
 <style scoped>

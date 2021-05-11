@@ -6,10 +6,18 @@ import ConsultationList from "../views/ConsultationList";
 import PatientList from "../views/PatientList";
 import { auth as store } from "../store/auth.module";
 import Login from "../views/Login";
+import Home from "../views/Home";
+import ConsultationListDoctor from "../views/ConsultationListDoctor";
+import PatientListDoctor from "../views/PatientListDoctor";
 
 Vue.use(VueRouter);
 
 const routes = [
+  {
+    path: "/home",
+    name: "Home",
+    component: Home,
+  },
   {
     path: "/",
     name: "Login",
@@ -40,6 +48,18 @@ const routes = [
     },
   },
   {
+    path: "/consultationsDoctor",
+    name: "ConsultationsDoctor",
+    component: ConsultationListDoctor,
+    beforeEnter: (to, from, next) => {
+      if (store.state.status.loggedIn) {
+        next();
+      } else {
+        next({ name: "Home" });
+      }
+    },
+  },
+  {
     path: "/consultations",
     name: "Consultations",
     component: ConsultationList,
@@ -55,6 +75,18 @@ const routes = [
     path: "/patients",
     name: "Patients",
     component: PatientList,
+    beforeEnter: (to, from, next) => {
+      if (store.state.status.loggedIn) {
+        next();
+      } else {
+        next({ name: "Home" });
+      }
+    },
+  },
+  {
+    path: "/patientsDoctor",
+    name: "PatientsDoctor",
+    component: PatientListDoctor,
     beforeEnter: (to, from, next) => {
       if (store.state.status.loggedIn) {
         next();
